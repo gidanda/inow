@@ -1,0 +1,17 @@
+{
+  "name": "inow",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "mobile",
+    "api"
+  ],
+  "scripts": {
+    "dev:mobile": "npm run dev --workspace mobile",
+    "dev:api": "npm run start:dev --workspace api",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  }
+}
+
