@@ -28,12 +28,12 @@ export default function NewMapScreen() {
     },
     onSuccess: (data) => {
       void queryClient.invalidateQueries({ queryKey: ["me", "maps"] });
-      router.replace(`/maps/${data.id}`);
+      router.push(`/maps/${data.id}`);
     }
   });
 
   return (
-    <ScreenShell title="New Map" body="Create a new map to collect spots around a theme or area.">
+    <ScreenShell title="New Map" body="Create a new map to collect spots around a theme or area." showBackButton>
       <TextInput
         style={styles.input}
         placeholder="Title"

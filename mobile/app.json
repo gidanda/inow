@@ -4,28 +4,16 @@
     "slug": "inow",
     "scheme": "inow",
     "version": "1.0.0",
+    "jsEngine": "jsc",
     "orientation": "portrait",
     "plugins": [
       "expo-router",
       "expo-image-picker",
       "expo-secure-store"
     ],
-    "experiments": {
-      "typedRoutes": true
-    },
     "ios": {
       "supportsTablet": false,
-      "config": {
-        "googleMapsApiKey": "${GOOGLE_MAPS_API_KEY}"
-      }
-    },
-    "android": {
-      "config": {
-        "googleMaps": {
-          "apiKey": "${GOOGLE_MAPS_API_KEY}"
-        }
-      }
+      "bundleIdentifier": "com.anonymous.inow"
     }
   }
 }
-

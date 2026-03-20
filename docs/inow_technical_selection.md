@@ -11,7 +11,7 @@
 
 - モバイルアプリ: `Expo SDK 55` + `React Native` + `TypeScript`
 - ルーティング: `Expo Router`
-- 地図表示: `react-native-maps`
+- 地図表示: 検証段階は `react-native-maps` + `MapKit`
 - 現在地取得: `expo-location`
 - 画像選択: `expo-image-picker`
 - 認証トークン保存: `expo-secure-store`
@@ -21,7 +21,7 @@
 - ORM / クエリ層: `Drizzle ORM`
 - バリデーション: `Zod`
 - 画像ストレージ: `Supabase Storage`
-- 地図 / Place 検索基盤: `Google Maps Platform`
+- 本格運用時の地図 / Place 検索基盤: `Google Maps Platform`
 - デプロイ: API は `Google Cloud Run`
 - CI/CD: `GitHub Actions`
 - テスト: `Vitest` + `Playwright`
@@ -32,6 +32,7 @@
 ### 2-1. 最優先条件
 - モバイルファーストで iOS / Android を同時に進められること
 - 地図体験を最優先に実装できること
+- 検証段階から本格運用への移行が現実的であること
 - Google Maps Platform との相性がよいこと
 - MVP 開発速度を優先しつつ、将来の拡張で破綻しないこと
 - DB / API / 画面責務を明確に分けられること
@@ -66,18 +67,20 @@
 ### 3-2. 地図・位置情報
 
 #### 採用
-- 地図表示: `react-native-maps`
+- 地図表示: 検証段階は `react-native-maps` + `MapKit`
 - 現在地: `expo-location`
 - Place 検索: `Google Maps Platform Places API (New)`
 
 #### 採用理由
 - Expo 公式ドキュメント上で `react-native-maps` は最新 SDK 向けに案内されている
+- 検証段階では iOS ネイティブの `MapKit` ベースで素早く地図 UI を確認できる
 - `expo-maps` は Expo docs 上で alpha 扱いのため、MVP の安定性を優先して採用しない
 - `expo-location` は Expo 公式の標準的な位置情報取得手段
 - Google Places API (New) は `Text Search`, `GetPlace`, `Autocomplete` など Place 検索に必要な機能を提供する
 
 #### 実装ルール
-- 地図描画はモバイルクライアント側で行う
+- 検証段階の地図描画は `react-native-maps` を通して `MapKit` ベースで行う
+- 本格運用時は Google Maps API 連携へ切り替える前提で責務を分離しておく
 - Google Place の検索結果はそのまま業務データにせず、`inow` の `spot` に変換して保存する
 - `google_place_id` と `formatted_address` は保持する
 
@@ -252,8 +255,9 @@ api/
 
 ## 6. 技術別ルール
 
-### 6-1. Google Maps Platform
-- Place 検索は Google に任せる
+### 6-1. 地図基盤
+- 検証段階の地図表示は `MapKit` を使う
+- 本格運用時の Place 検索は Google に任せる
 - `inow` の業務データは自前 DB に保存する
 - Google Place 情報を主キーとして扱わない
 
@@ -295,7 +299,7 @@ api/
 2. `api/` NestJS プロジェクト
 3. PostgreSQL + PostGIS 環境
 4. Drizzle schema / migration 基盤
-5. Google Maps Platform API キー管理
+5. MapKit 検証方針と Google Maps Platform API キー管理
 6. Supabase Storage バケット
 7. GitHub Actions の CI
 
@@ -311,8 +315,8 @@ api/
 ## 9. 決定事項
 
 - モバイルは `Expo` を採用する
-- 地図表示は `react-native-maps` を採用する
-- 地図基盤は `Google Maps Platform`
+- 地図表示は検証段階で `react-native-maps` + `MapKit` を採用する
+- 本格運用時の地図 / Place 基盤は `Google Maps Platform` とする
 - Place 検索は Google、業務データは自前 API / DB
 - API は `NestJS`
 - DB は `PostgreSQL + PostGIS`

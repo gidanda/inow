@@ -5,20 +5,12 @@ import { ScreenShell } from "../../components/screen-shell";
 import { useMyMapsQuery, useProfileQuery } from "../../hooks/use-profile-query";
 
 export default function ProfileScreen() {
-  const profileQuery = useProfileQuery();
+  useProfileQuery();
   const mapsQuery = useMyMapsQuery();
-  const profile = profileQuery.data;
   const maps = mapsQuery.data ?? [];
 
   return (
-    <ScreenShell
-      title="Profile"
-      body="Owned maps, saved maps, default maps, and settings all anchor from this screen."
-    >
-      <View style={styles.stats}>
-        <Text style={styles.stat}>{profile?.map_count ?? 0} owned maps</Text>
-        <Text style={styles.stat}>{profile?.saved_map_count ?? 0} saved maps</Text>
-      </View>
+    <ScreenShell showHeader={false}>
       <View style={styles.list}>
         {maps.map((item) => (
           <Pressable key={item.id} style={styles.card} onPress={() => router.push(`/maps/${item.id}`)}>
@@ -43,21 +35,7 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  stats: {
-    marginTop: 16,
-    flexDirection: "row",
-    gap: 12
-  },
-  stat: {
-    borderRadius: 999,
-    backgroundColor: "#eadfcd",
-    color: "#513f31",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    overflow: "hidden"
-  },
   list: {
-    marginTop: 16,
     gap: 12
   },
   card: {

@@ -36,11 +36,11 @@ export default function MapDetailScreen() {
   const isOwner = Boolean(map && !("error" in map) && meQuery.data?.id === map.owner?.id);
 
   if (!map || "error" in map) {
-    return <ScreenShell title="Map" body="Map not found." />;
+    return <ScreenShell title="Map" body="Map not found." showBackButton />;
   }
 
   return (
-    <ScreenShell title={map.title} body={map.description ?? "No description"}>
+    <ScreenShell title={map.title} body={map.description ?? "No description"} showBackButton>
       <View style={styles.actions}>
         <Pressable style={styles.button} onPress={() => saveMutation.mutate()}>
           <Text style={styles.label}>{map.is_saved ? "保存済み" : "保存する"}</Text>
