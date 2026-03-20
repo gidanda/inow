@@ -1,16 +1,34 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { router } from "expo-router";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { ScreenShell } from "../../components/screen-shell";
 import { useMyMapsQuery, useProfileQuery } from "../../hooks/use-profile-query";
 
 export default function ProfileScreen() {
-  useProfileQuery();
+  const profileQuery = useProfileQuery();
   const mapsQuery = useMyMapsQuery();
+  const profile = profileQuery.data;
   const maps = mapsQuery.data ?? [];
 
   return (
     <ScreenShell showHeader={false}>
+      <View style={styles.topBar}>
+        <View />
+        <Pressable style={styles.settingsButton} onPress={() => router.push("/settings")}>
+          <MaterialCommunityIcons name="cog-outline" size={22} color="#1d1514" />
+        </Pressable>
+      </View>
+      <View style={styles.profileRow}>
+        {profile?.profile_image_url ? (
+          <Image source={{ uri: profile.profile_image_url }} style={styles.avatar} />
+        ) : (
+          <View style={styles.avatarPlaceholder}>
+            <MaterialCommunityIcons name="account-outline" size={24} color="#6b5a4d" />
+          </View>
+        )}
+        <Text style={styles.displayName}>{profile?.display_name ?? "User"}</Text>
+      </View>
       <View style={styles.list}>
         {maps.map((item) => (
           <Pressable key={item.id} style={styles.card} onPress={() => router.push(`/maps/${item.id}`)}>
@@ -35,6 +53,45 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
+  topBar: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 16
+  },
+  profileRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 16,
+    marginBottom: 16
+  },
+  avatar: {
+    width: 88,
+    height: 88,
+    borderRadius: 44
+  },
+  avatarPlaceholder: {
+    width: 88,
+    height: 88,
+    borderRadius: 44,
+    backgroundColor: "#eadfcd",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  displayName: {
+    flex: 1,
+    color: "#1f1a17",
+    fontSize: 24,
+    fontWeight: "700"
+  },
+  settingsButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 16,
+    backgroundColor: "#eadfcd",
+    alignItems: "center",
+    justifyContent: "center"
+  },
   list: {
     gap: 12
   },

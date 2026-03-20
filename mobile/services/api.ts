@@ -34,6 +34,7 @@ export type ProfileResponse = {
   user_id: string;
   display_name: string;
   bio?: string;
+  profile_image_url?: string;
   map_count: number;
   saved_map_count: number;
 };
